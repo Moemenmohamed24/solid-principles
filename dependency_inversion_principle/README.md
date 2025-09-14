@@ -60,3 +60,7 @@
 
  فقدان المرونة (Rigid Code)
 النظام كله هيبقى زي سلسلة حديد: لو كسرت حلقة (التفاصيل)، السلسلة كلها وقعت.
+
+شكل الاعتماد:
+ <img width="671" height="129" alt="image" src="https://github.com/user-attachments/assets/45524396-8de2-4789-819c-298d903f303a" />
+
