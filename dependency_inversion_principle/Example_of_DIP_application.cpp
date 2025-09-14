@@ -1,73 +1,77 @@
-// Interface Pollution ده كده اكبر غلط لان انا عملت
-class IMachine {
-public:
-    virtual void Print() = 0;
-    virtual void Scan() = 0;
-    virtual void Fax() = 0;
-};
+#include <iostream>
+#include <string>
 
-// ده كلاس عادي عامل توريث
-class Printer : public IMachine {
+// --------- Low-level module ---------
+class EmailSender {
 public:
-    void Print() override {
-        // دي داله  انا عايزها في الكلاس
-    }
-    void Scan() override {
-        // interface مش محتاج، بس مضطر أعمله علشان الكلاس الاساسي 
-    }
-    void Fax() override {
-        // interface مش محتاج، بس مضطر أعمله علشان الكلاس الاساسي 
+    void SendEmail(string to, const string msg) {
+        std::cout << "[EMAIL] " << to << " : " << msg << "\n";
     }
 };
 
-
-//<------------------------------------------ISP الحل مع ------------------------->
-// واجهة الطباعة
-class IPrinter {
+// --------- High-level module ---------
+class MessageService {
+    EmailSender sender; // بيعتمد على التفاصيل مباشرة او الجزء الاسفل
 public:
-    virtual void Print() = 0;
+    void NotifyUser(string user, string msg) {
+        sender.SendEmail(user, msg); // مربوط بالـ Low-level
+    }
+};
+//هنا لو حبيت اضيف اي داله تانيه هطر اني اعمل شرط وده غلط 
+int main() {
+    MessageService service;
+    service.NotifyUser("Ali", "Hello Email!");
+    return 0;
+}
+
+//<-------------------------------solution with DIP--------------------------->
+
+// --------- Interface (Abstraction) الواجهه ---------
+class IMessageSender {
+public:
+    virtual void Send(string to, string msg) = 0;
+    virtual ~IMessageSender() {}
 };
 
-// واجهة الماسح الضوئي
-class IScanner {
+// --------- Low-level modules ---------
+class EmailSender : public IMessageSender {
 public:
-    virtual void Scan() = 0;
-};
-
-// واجهة الفاكس
-class IFax {
-public:
-    virtual void Fax() = 0;  
-};
-
-// كلاس الطابعة العادية يستخدم واجهة الطباعة بس
-class SimplePrinter : public IPrinter {
-public:
-    void Print() override {
-        // 
+    void Send(string to, string msg) override {
+        std::cout << "[EMAIL] " << to << " : " << msg << "\n";
     }
 };
 
-// كلاس الماسح الضوئي يستخدم واجهة الماسح الضوئي بس
-class SimpleScanner : public IScanner {
+class SMSSender : public IMessageSender {
 public:
-    void Scan() override {
-        // منطق المسح
+    void Send(string to, const string msg) override {
+        std::cout << "[SMS] " << to << " : " << msg << "\n";
     }
 };
 
-// كلاس الفاكس يستخدم واجهة الفاكس بس
-class SimpleFax : public IFax {
+// --------- High-level module ---------
+class MessageService {
+    IMessageSender* sender; 
 public:
-    void Fax() override {
-        // منطق الفاكس
+    void SetSender(IMessageSender* s) {
+        sender = s;
+    }
+
+    void NotifyUser(string user, const string msg) {
+        sender->Send(user, msg);
     }
 };
+//هنا لو حبيت اضيف اي داله هيكون سهل لاني معايا اصلا الاوبجيكت وفيه كل الدوال اللي فيه 
 
-// كلاس جهاز متعدد الوظائف يورث من كل الواجهات اللي محتاجها
-class MultiFunctionMachine : public IPrinter, public IScanner, public IFax {
-public:
-    void Print() override { /* print logic */ }
-    void Scan() override { /* scan logic */ }
-    void Fax() override { /* fax logic */ }
-};
+int main() {
+    MessageService service;
+
+    EmailSender email;
+    service.SetSender(&email);
+    service.NotifyUser("Ali", "Hello Email!");
+
+    SMSSender sms;
+    service.SetSender(&sms);
+    service.NotifyUser("Omar", "Hello SMS!");
+
+    return 0;
+}
