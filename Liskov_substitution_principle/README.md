@@ -10,20 +10,11 @@
 
 توضيح اكتر بمثال بسيط :
 
-
+<img width="1678" height="773" alt="Screenshot 2025-09-15 161204" src="https://github.com/user-attachments/assets/0b9d6faa-d62d-41a5-b80d-a669fd83bc25" />
 انا هنا لو بدلت كلاس الاطيور مع النعامه كده غلط لانه هيدي حاجه النعامه مش بتعملها اصلا وهنا الاستبدال غلط علشان كده بنقول انو بيحصل في الruntime او بنقول احنا بنستخدمه علشان نتفادي النتيجه المتوقعه في ان لازم الكلاس الابن يكون بفنس منطق او بنفس تطبيق الكلاس الاب ***** مش لازم نفس النتيجه بالظبط بس لازم نفس الحاجه او نفس الفعل 
 
 
-class Bird {
-    public void fly() { }
-}
 
-class Ostrich extends Bird {
-    @Override
-    public void fly() {
-        throw new UnsupportedOperationException();
-    }
-}
 
   ✅بنستخدمه ليه ؟ بيحل مشكله ايه ؟
 المشكلة:
