@@ -10,31 +10,20 @@
 
 توضيح اكتر بمثال بسيط :
 
-Bird كلاس الطيور الاساسي 
-class Bird
-{
-    public:
-    virtual void fly()
-    {
-        cout << "Bird is flying" << endl;
-    }
-    virtual ~Bird() = default;
-};
-
 
 انا هنا لو بدلت كلاس الاطيور مع النعامه كده غلط لانه هيدي حاجه النعامه مش بتعملها اصلا وهنا الاستبدال غلط علشان كده بنقول انو بيحصل في الruntime او بنقول احنا بنستخدمه علشان نتفادي النتيجه المتوقعه في ان لازم الكلاس الابن يكون بفنس منطق او بنفس تطبيق الكلاس الاب ***** مش لازم نفس النتيجه بالظبط بس لازم نفس الحاجه او نفس الفعل 
 
-class Ostrich : public Bird
-{
-public:
-    void fly() override
-{
-    throw runtime_error("Ostrich cannot fly!"); // ✖ خطأ
+
+class Bird {
+    public void fly() { }
 }
-};
 
-
-
+class Ostrich extends Bird {
+    @Override
+    public void fly() {
+        throw new UnsupportedOperationException();
+    }
+}
 
   ✅بنستخدمه ليه ؟ بيحل مشكله ايه ؟
 المشكلة:
